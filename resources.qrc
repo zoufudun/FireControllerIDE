@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/components">
+        <file>default_components.xml</file>
+    </qresource>
+</RCC>
