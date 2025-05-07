@@ -1,8 +1,6 @@
 <!DOCTYPE RCC>
-
 <RCC version="1.0">
     <qresource prefix="/">
-        <file>components/default_components.xml</file>
         <file>icons/host.png</file>
         <file>icons/loop.png</file>
         <file>icons/di.png</file>
@@ -11,5 +9,8 @@
         <file>icons/relay.png</file>
         <file>icons/comm.png</file>
         <file>icons/default.png</file>
+        <file>themes/default.qss</file>
+        <file>themes/atom_one.qss</file>
+        <file>themes/solarized_light.qss</file>
     </qresource>
 </RCC>

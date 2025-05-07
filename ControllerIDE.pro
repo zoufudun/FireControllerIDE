@@ -19,14 +19,14 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     projectmanager.cpp \
-    componentmanager.cpp
+    componentmanager.cpp \
+    thememanager.cpp
 
 HEADERS += \
     componentmanager.h \
     mainwindow.h \
     projectmanager.h \
-    projectmanager.h \
-    componentmanager.h
+    thememanager.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -34,3 +34,8 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 RESOURCES += resources.qrc
+
+OTHER_FILES += \
+    themes/default.qss \
+    themes/atom_one.qss \
+    themes/solarized_light.qss

@@ -222,6 +222,60 @@ void ComponentManager::showMoveComponentDialog(QStandardItem *item)
     }
 }
 
+void ComponentManager::moveComponentUp(QStandardItem *item)
+{
+    if (!item) {
+        return;
+    }
+    
+    QStandardItem *parentItem = item->parent();
+    if (!parentItem) {
+        return;
+    }
+    
+    int row = item->row();
+    if (row <= 0) {
+        // 已经是第一个，无法上移
+        return;
+    }
+    
+    // 从父项中移除该项
+    QList<QStandardItem*> rowItems = parentItem->takeRow(row);
+    
+    // 在上一行位置插入
+    parentItem->insertRow(row - 1, rowItems);
+    
+    // 发出顺序变更信号
+    emit componentOrderChanged(rowItems.first(), true);
+}
+
+void ComponentManager::moveComponentDown(QStandardItem *item)
+{
+    if (!item) {
+        return;
+    }
+    
+    QStandardItem *parentItem = item->parent();
+    if (!parentItem) {
+        return;
+    }
+    
+    int row = item->row();
+    if (row >= parentItem->rowCount() - 1) {
+        // 已经是最后一个，无法下移
+        return;
+    }
+    
+    // 从父项中移除该项
+    QList<QStandardItem*> rowItems = parentItem->takeRow(row);
+    
+    // 在下一行位置插入
+    parentItem->insertRow(row + 1, rowItems);
+    
+    // 发出顺序变更信号
+    emit componentOrderChanged(rowItems.first(), false);
+}
+
 QList<ComponentInfo> ComponentManager::getComponentTypes() const
 {
     return m_componentTypes;

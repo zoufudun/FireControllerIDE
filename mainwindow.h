@@ -9,13 +9,14 @@
 #include <QStatusBar>
 #include "projectmanager.h"
 #include "componentmanager.h"
+#include "thememanager.h"
 
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    MainWindow(QWidget *parent = nullptr);
+    explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
 private slots:
@@ -31,9 +32,17 @@ private slots:
     void onComponentAdded(const ComponentInfo &component);
     void onComponentDeleted(QStandardItem *item);
     void onComponentMoved(QStandardItem *item, QStandardItem *newParent);
-    void showProjectContextMenu(const QPoint &pos);
+
+    void moveComponentUp();
+    void moveComponentDown();
+    void onComponentOrderChanged(QStandardItem *item, bool moveUp);
 
 private:
+    void showProjectContextMenu(const QPoint &pos);
+    void changeTheme();
+    void setDefaultTheme();
+    void setAtomOneTheme();
+    void setSolarizedLightTheme();
     void setupUI();
     void createActions();
     void createMenus();
@@ -47,6 +56,12 @@ private:
 
     ProjectManager *projectManager;
     ComponentManager *componentManager;
+    ThemeManager *themeManager;
+    QMenu *themeMenu;
+    QMenu *editMenu;  // Add this line to declare editMenu
+    QAction *defaultThemeAction;
+    QAction *atomOneThemeAction;
+    QAction *solarizedLightThemeAction;
 
     // Actions
     QAction *newProjectAction;
@@ -59,6 +74,8 @@ private:
     QAction *moveComponentAction;   // 添加移动组件的动作
     QAction *configureComponentAction;
     QAction *exitAction;
+    QAction *moveUpAction;
+    QAction *moveDownAction;
 };
 
 #endif // MAINWINDOW_H

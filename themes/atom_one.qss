@@ -1,0 +1,87 @@
+/* ATOM ONE 主题 */
+QWidget {
+    background-color: #282c34;
+    color: #abb2bf;
+}
+QMenuBar, QMenu {
+    background-color: #21252b;
+    color: #abb2bf;
+}
+QMenuBar::item:selected, QMenu::item:selected {
+    background-color: #3a3f4b;
+}
+QToolBar {
+    background-color: #21252b;
+    border: none;
+}
+QToolButton {
+    background-color: transparent;
+    color: #abb2bf;
+}
+QToolButton:hover {
+    background-color: #3a3f4b;
+}
+QStatusBar {
+    background-color: #21252b;
+    color: #abb2bf;
+}
+QTreeView, QListView {
+    background-color: #282c34;
+    color: #abb2bf;
+    border: 1px solid #181a1f;
+}
+QTreeView::item:selected, QListView::item:selected {
+    background-color: #3a3f4b;
+}
+QLineEdit, QTextEdit, QPlainTextEdit {
+    background-color: #282c34;
+    color: #abb2bf;
+    border: 1px solid #181a1f;
+}
+QPushButton {
+    background-color: #3a3f4b;
+    color: #abb2bf;
+    border: 1px solid #181a1f;
+    padding: 5px;
+}
+QPushButton:hover {
+    background-color: #4b5363;
+}
+QTabWidget::pane {
+    border: 1px solid #181a1f;
+}
+QTabBar::tab {
+    background-color: #21252b;
+    color: #abb2bf;
+    padding: 5px 10px;
+    border: 1px solid #181a1f;
+    border-bottom: none;
+}
+QTabBar::tab:selected {
+    background-color: #282c34;
+}
+QDockWidget {
+    titlebar-close-icon: url(:/icons/close-dark.png);
+    titlebar-normal-icon: url(:/icons/undock-dark.png);
+}
+QDockWidget::title {
+    background-color: #21252b;
+    color: #abb2bf;
+    padding-left: 5px;
+}
+QScrollBar:vertical {
+    background-color: #282c34;
+    width: 10px;
+}
+QScrollBar::handle:vertical {
+    background-color: #3a3f4b;
+    min-height: 20px;
+}
+QScrollBar:horizontal {
+    background-color: #282c34;
+    height: 10px;
+}
+QScrollBar::handle:horizontal {
+    background-color: #3a3f4b;
+    min-width: 20px;
+}
