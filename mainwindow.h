@@ -29,8 +29,9 @@ private slots:
     void moveComponent();           // 添加移动组件的槽函数
     void configureComponent();
     void onComponentAdded(const ComponentInfo &component);
-    void onComponentDeleted(QStandardItem *item);        // 添加组件删除的处理函数
-    void onComponentMoved(QStandardItem *item, QStandardItem *newParent); // 添加组件移动的处理函数
+    void onComponentDeleted(QStandardItem *item);
+    void onComponentMoved(QStandardItem *item, QStandardItem *newParent);
+    void showProjectContextMenu(const QPoint &pos);
 
 private:
     void setupUI();
