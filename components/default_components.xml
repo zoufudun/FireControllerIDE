@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ComponentLibrary>
+    <Component name="按钮控件" type="Button" description="一个标准按钮控件">
+        <Property name="text" default="按钮" />
+        <Property name="width" default="100" />
+        <Property name="height" default="30" />
+    </Component>
+    <Component name="文本框控件" type="TextBox" description="一个标准文本输入框">
+        <Property name="text" default="" />
+        <Property name="width" default="150" />
+        <Property name="height" default="25" />
+        <Property name="placeholder" default="请输入..." />
+    </Component>
+    <Component name="标签控件" type="Label" description="一个标准文本标签">
+        <Property name="text" default="标签" />
+        <Property name="width" default="100" />
+        <Property name="height" default="20" />
+    </Component>
+    <Component name="组合框控件" type="ComboBox" description="一个下拉选择框">
+        <Property name="items" default="选项1,选项2,选项3" />
+        <Property name="width" default="120" />
+        <Property name="height" default="25" />
+    </Component>
+</ComponentLibrary>

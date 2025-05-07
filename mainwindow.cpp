@@ -249,6 +249,12 @@ void MainWindow::onComponentAdded(const ComponentInfo &component)
         QStandardItem *rootItem = model->item(0);
         QStandardItem *item = new QStandardItem(component.name);
         item->setData(component.type, Qt::UserRole);
+        
+        // 设置图标
+        if (!component.iconPath.isEmpty()) {
+            item->setIcon(QIcon(component.iconPath));
+        }
+        
         rootItem->appendRow(item);
     } else if (component.level == 2) {
         // 第二层级 - 其他模块，需要添加到主机模块下
@@ -278,6 +284,12 @@ void MainWindow::onComponentAdded(const ComponentInfo &component)
         
         QStandardItem *item = new QStandardItem(component.name);
         item->setData(component.type, Qt::UserRole);
+        
+        // 设置图标
+        if (!component.iconPath.isEmpty()) {
+            item->setIcon(QIcon(component.iconPath));
+        }
+        
         hostItem->appendRow(item);
     }
     

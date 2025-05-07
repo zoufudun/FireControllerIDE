@@ -1,3 +1,11 @@
+/*
+ * @Description: 
+ * @Version: 1.0
+ * @Autor: PhodonZou
+ * @Date: 2025-05-07 11:48:40
+ * @LastEditors: PhodonZou
+ * @LastEditTime: 2025-05-07 16:48:23
+ */
 #ifndef COMPONENTMANAGER_H
 #define COMPONENTMANAGER_H
 
@@ -12,6 +20,7 @@ struct ComponentInfo {
     QString type;        // 组件类型
     QString description; // 组件描述
     int level;           // 组件层级 (1: 主机模块, 2: 其他模块)
+    QString iconPath;    // 组件图标路径
 };
 
 class ComponentManager : public QObject

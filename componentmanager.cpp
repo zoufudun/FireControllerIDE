@@ -33,6 +33,7 @@ void ComponentManager::initializeComponentTypes()
     hostModule.type = "HostModule";
     hostModule.description = "控制器主机模块";
     hostModule.level = 1;
+    hostModule.iconPath = ":/icons/host.png";  // 设置图标路径
     m_componentTypes.append(hostModule);
     
     // 第二层级 - 其他模块
@@ -40,13 +41,19 @@ void ComponentManager::initializeComponentTypes()
         "回路模块", "DI模块", "DO模块", "AI模块", "继电器模块", "通信模块"
     };
     
-    for (const QString &moduleName : secondLevelModules) {
+    QStringList iconPaths = {
+        ":/icons/loop.png", ":/icons/di.png", ":/icons/do.png", 
+        ":/icons/ai.png", ":/icons/relay.png", ":/icons/comm.png"
+    };
+    
+    for (int i = 0; i < secondLevelModules.size(); ++i) {
         ComponentInfo module;
-        module.name = moduleName;
-        QString typeStr = moduleName;
+        module.name = secondLevelModules[i];
+        QString typeStr = secondLevelModules[i];
         module.type = typeStr.replace("模块", "Module");
-        module.description = QString("%1，连接到主机模块").arg(moduleName);
+        module.description = QString("%1，连接到主机模块").arg(secondLevelModules[i]);
         module.level = 2;
+        module.iconPath = i < iconPaths.size() ? iconPaths[i] : ":/icons/default.png";
         m_componentTypes.append(module);
     }
 }
@@ -68,6 +75,13 @@ void ComponentManager::showAddComponentDialog()
         item->setToolTip(component.description);
         item->setData(Qt::UserRole, component.type);
         item->setData(Qt::UserRole + 1, component.level);
+        item->setData(Qt::UserRole + 2, component.iconPath);
+        
+        // 设置图标
+        if (!component.iconPath.isEmpty()) {
+            item->setIcon(QIcon(component.iconPath));
+        }
+        
         componentList->addItem(item);
     }
     layout->addWidget(componentList);
@@ -86,6 +100,11 @@ void ComponentManager::showAddComponentDialog()
             nameEdit->setText(current->text());
             nameEdit->selectAll();
         }
+    });
+    
+    // 添加双击处理
+    connect(componentList, &QListWidget::itemDoubleClicked, [&dialog](QListWidgetItem *) {
+        dialog.accept();
     });
     
     QDialogButtonBox *buttonBox = new QDialogButtonBox(
@@ -112,12 +131,14 @@ void ComponentManager::showAddComponentDialog()
             
             QString componentType = selectedItem->data(Qt::UserRole).toString();
             int componentLevel = selectedItem->data(Qt::UserRole + 1).toInt();
+            QString iconPath = selectedItem->data(Qt::UserRole + 2).toString();
             
             // 创建组件信息并发送信号
             ComponentInfo component;
             component.name = componentName;
             component.type = componentType;
             component.level = componentLevel;
+            component.iconPath = iconPath;
             
             // 查找完整的组件信息
             for (const ComponentInfo &info : m_componentTypes) {

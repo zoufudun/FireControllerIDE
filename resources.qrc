@@ -1,5 +1,15 @@
-<RCC>
-    <qresource prefix="/components">
-        <file>default_components.xml</file>
+<!DOCTYPE RCC>
+
+<RCC version="1.0">
+    <qresource prefix="/">
+        <file>components/default_components.xml</file>
+        <file>icons/host.png</file>
+        <file>icons/loop.png</file>
+        <file>icons/di.png</file>
+        <file>icons/do.png</file>
+        <file>icons/ai.png</file>
+        <file>icons/relay.png</file>
+        <file>icons/comm.png</file>
+        <file>icons/default.png</file>
     </qresource>
 </RCC>
