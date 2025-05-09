@@ -13,11 +13,16 @@
 #include <QTreeView>     // 添加此头文件
 #include <QStandardItem> // 添加此头文件
 
+#include "dimoduleconfigdialog.h"  // 添加DI模块配置对话框头文件
+
 ComponentManager::ComponentManager(QObject *parent)
     : QObject(parent)
 {
     // 初始化组件类型列表
     initializeComponentTypes();
+    
+    // 初始化DI模块
+    m_diModule = new DIModule(this);
 }
 
 ComponentManager::~ComponentManager()
@@ -153,10 +158,36 @@ void ComponentManager::showAddComponentDialog()
     }
 }
 
-void ComponentManager::showConfigureComponentDialog()
+void ComponentManager::showConfigureComponentDialog(QStandardItem *item)
 {
-    // 实现组件配置对话框
-    QMessageBox::information(nullptr, "配置组件", "组件配置功能将在后续版本中实现");
+    if (!item) {
+        return;
+    }
+    
+    // 根据组件类型显示不同的配置对话框
+    QString componentType = item->data(Qt::UserRole).toString();
+    
+    if (componentType == "DIModule") {
+        showDIModuleConfigDialog(item);
+    } else {
+        // 其他类型的组件配置
+        QMessageBox::information(nullptr, "配置组件", "组件配置功能将在后续版本中实现");
+    }
+}
+
+void ComponentManager::showDIModuleConfigDialog(QStandardItem *item)
+{
+    if (!item) {
+        return;
+    }
+    
+    // 创建DI模块配置对话框
+    DIModuleConfigDialog dialog(m_diModule);
+    
+    if (dialog.exec() == QDialog::Accepted) {
+        // 配置已保存，可以在这里更新项目树中的组件信息
+        // 例如，更新组件名称或图标等
+    }
 }
 
 void ComponentManager::showDeleteComponentDialog(QStandardItem *item)

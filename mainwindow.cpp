@@ -251,8 +251,22 @@ void MainWindow::addComponent()
 
 void MainWindow::configureComponent()
 {
-    // 显示组件配置对话框
-    componentManager->showConfigureComponentDialog();
+    // 获取当前选中的项目
+    QModelIndex selectedIndex = projectTreeView->currentIndex();
+    if (!selectedIndex.isValid()) {
+        QMessageBox::information(this, tr("配置组件"), tr("请先选择一个组件"));
+        return;
+    }
+    
+    QStandardItemModel *model = qobject_cast<QStandardItemModel*>(projectTreeView->model());
+    if (!model) {
+        return;
+    }
+    
+    QStandardItem *item = model->itemFromIndex(selectedIndex);
+    if (item) {
+        componentManager->showConfigureComponentDialog(item);
+    }
 }
 
 // 添加组件处理函数
@@ -441,7 +455,7 @@ void MainWindow::showProjectContextMenu(const QPoint &pos)
                 QModelIndex currentIndex = projectTreeView->currentIndex();
                 if (currentIndex.isValid()) {
                     QStandardItem *item = projectManager->projectModel()->itemFromIndex(currentIndex);
-                    componentManager->showConfigureComponentDialog();
+                    componentManager->showConfigureComponentDialog(item);
                 }
             });
             contextMenu.addAction(configureAction);
