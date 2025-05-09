@@ -19,6 +19,8 @@ SOURCES += \
     componentmanager.cpp \
     dimodule.cpp \
     dimoduleconfigdialog.cpp \
+    domodule.cpp \
+    domoduleconfigdialog.cpp \
     main.cpp \
     mainwindow.cpp \
     projectmanager.cpp \
@@ -28,6 +30,8 @@ HEADERS += \
     componentmanager.h \
     dimodule.h \
     dimoduleconfigdialog.h \
+    domodule.h \
+    domoduleconfigdialog.h \
     mainwindow.h \
     projectmanager.h \
     thememanager.h

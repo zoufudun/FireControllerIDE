@@ -1,6 +1,8 @@
 debug/componentmanager.o
 debug/dimodule.o
 debug/dimoduleconfigdialog.o
+debug/domodule.o
+debug/domoduleconfigdialog.o
 debug/main.o
 debug/mainwindow.o
 debug/projectmanager.o
@@ -9,6 +11,8 @@ debug/qrc_resources.o
 debug/moc_componentmanager.o
 debug/moc_dimodule.o
 debug/moc_dimoduleconfigdialog.o
+debug/moc_domodule.o
+debug/moc_domoduleconfigdialog.o
 debug/moc_mainwindow.o
 debug/moc_projectmanager.o
 debug/moc_thememanager.o

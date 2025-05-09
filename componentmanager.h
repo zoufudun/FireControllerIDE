@@ -14,6 +14,7 @@
 #include <QList>
 #include <QStandardItem>
 #include "dimodule.h"  // 添加DI模块头文件
+#include "domodule.h"  // 添加DO模块头文件
 
 // 组件信息结构体
 struct ComponentInfo {
@@ -40,6 +41,9 @@ public:
     void moveComponentDown(QStandardItem *item);
     // 添加DI模块配置对话框
     void showDIModuleConfigDialog(QStandardItem *item);
+    
+    // 添加DO模块配置对话框
+    void showDOModuleConfigDialog(QStandardItem *item);
     QList<ComponentInfo> getComponentTypes() const;
 
 signals:
@@ -54,6 +58,9 @@ private:
     
     // 添加DI模块实例
     DIModule *m_diModule;
+    
+    // 添加DO模块实例
+    DOModule *m_doModule;
 };
 
 #endif // COMPONENTMANAGER_H
