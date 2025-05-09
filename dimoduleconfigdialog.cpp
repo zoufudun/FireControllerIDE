@@ -60,20 +60,29 @@ void DIModuleConfigDialog::setupUI()
     
     mainLayout->addLayout(channelCountLayout);
     
-    // 位变量表格
-    m_bitTable = new QTableWidget(8, 3, this);
-    m_bitTable->setHorizontalHeaderLabels(QStringList() << "位" << "变量名" << "描述");
+    // 位变量表格 - 添加值列
+    m_bitTable = new QTableWidget(8, 4, this);
+    m_bitTable->setHorizontalHeaderLabels(QStringList() << "位" << "变量名" << "值" << "描述");
     m_bitTable->verticalHeader()->setVisible(false);
     
     // 设置表格列可以拖动调整大小
     m_bitTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
     m_bitTable->horizontalHeader()->setStretchLastSection(true);
     
+    // 允许通过拖拽调整列的顺序
+    m_bitTable->horizontalHeader()->setSectionsMovable(true);
+    
     // 设置默认列宽
     m_bitTable->setColumnWidth(0, 50);  // 位列宽度较小
     m_bitTable->setColumnWidth(1, 200); // 变量名列宽度适中
+    m_bitTable->setColumnWidth(2, 50);  // 值列宽度较小
     
     mainLayout->addWidget(m_bitTable);
+    
+    // 添加提示标签
+    QLabel *hintLabel = new QLabel("提示：可以拖动表头调整列的顺序", this);
+    hintLabel->setStyleSheet("color: gray; font-style: italic;");
+    mainLayout->addWidget(hintLabel);
     
     // 按钮
     QHBoxLayout *buttonLayout = new QHBoxLayout();
@@ -94,6 +103,13 @@ void DIModuleConfigDialog::setupUI()
     connect(m_saveButton, &QPushButton::clicked, this, &DIModuleConfigDialog::saveConfiguration);
     connect(m_cancelButton, &QPushButton::clicked, this, &DIModuleConfigDialog::reject);
     connect(m_bitTable, &QTableWidget::cellChanged, this, &DIModuleConfigDialog::onBitVariableChanged);
+    
+    // 连接列顺序变化信号
+    connect(m_bitTable->horizontalHeader(), &QHeaderView::sectionMoved,
+            this, [this](int logicalIndex, int oldVisualIndex, int newVisualIndex) {
+        // 可以在这里添加列顺序变化的处理逻辑
+        // 例如，保存当前的列顺序到配置中
+    });
 }
 
 void DIModuleConfigDialog::updateBitTable(int channelIndex)
@@ -108,6 +124,12 @@ void DIModuleConfigDialog::updateBitTable(int channelIndex)
     DIChannel *channel = m_module->getChannel(channelIndex);
     if (!channel) {
         return;
+    }
+    
+    // 保存当前的列顺序
+    QList<int> columnOrder;
+    for (int i = 0; i < m_bitTable->columnCount(); ++i) {
+        columnOrder.append(m_bitTable->horizontalHeader()->visualIndex(i));
     }
     
     // 更新表格数据
@@ -129,18 +151,76 @@ void DIModuleConfigDialog::updateBitTable(int channelIndex)
             nameItem->setText(channel->bits[j].name);
         }
         
+        // 值 - 添加下拉框
+        QComboBox *valueCombo = qobject_cast<QComboBox*>(m_bitTable->cellWidget(j, 2));
+        if (!valueCombo) {
+            valueCombo = new QComboBox();
+            valueCombo->addItem("0", 0);
+            valueCombo->addItem("1", 1);
+            valueCombo->setCurrentIndex(channel->bits[j].value);
+            
+            // 连接值变化信号
+            connect(valueCombo, QOverload<int>::of(&QComboBox::currentIndexChanged), 
+                    this, [this, j](int index) {
+                DIBitVariable variable = m_module->getBitVariable(m_currentChannelIndex, j);
+                variable.value = index;
+                m_module->setBitVariable(m_currentChannelIndex, j, variable);
+            });
+            
+            m_bitTable->setCellWidget(j, 2, valueCombo);
+        } else {
+            valueCombo->setCurrentIndex(channel->bits[j].value);
+        }
+        
         // 描述
-        QTableWidgetItem *descItem = m_bitTable->item(j, 2);
+        QTableWidgetItem *descItem = m_bitTable->item(j, 3);
         if (!descItem) {
             descItem = new QTableWidgetItem(channel->bits[j].description);
-            m_bitTable->setItem(j, 2, descItem);
+            m_bitTable->setItem(j, 3, descItem);
         } else {
             descItem->setText(channel->bits[j].description);
         }
     }
     
+    // 恢复列顺序
+    for (int i = 0; i < columnOrder.size(); ++i) {
+        int visualIndex = m_bitTable->horizontalHeader()->visualIndex(i);
+        if (visualIndex != columnOrder[i]) {
+            m_bitTable->horizontalHeader()->moveSection(visualIndex, columnOrder[i]);
+        }
+    }
+    
     // 重新连接信号
     connect(m_bitTable, &QTableWidget::cellChanged, this, &DIModuleConfigDialog::onBitVariableChanged);
+}
+
+void DIModuleConfigDialog::onBitVariableChanged(int row, int column)
+{
+    // 获取逻辑列索引对应的实际数据列
+    int nameColumn = 1;  // 变量名列的逻辑索引
+    int descColumn = 3;  // 描述列的逻辑索引
+    
+    // 只处理变量名和描述列
+    if (column != nameColumn && column != descColumn) {
+        return;
+    }
+    
+    // 获取变量名和描述
+    QString name = m_bitTable->item(row, nameColumn) ? m_bitTable->item(row, nameColumn)->text() : "";
+    QString description = m_bitTable->item(row, descColumn) ? m_bitTable->item(row, descColumn)->text() : "";
+    
+    // 获取当前值
+    QComboBox *valueCombo = qobject_cast<QComboBox*>(m_bitTable->cellWidget(row, 2));
+    int value = valueCombo ? valueCombo->currentIndex() : 0;
+    
+    // 更新模块数据
+    DIBitVariable variable;
+    variable.name = name;
+    variable.description = description;
+    variable.isGlobal = true;  // 默认设置为全局变量
+    variable.value = value;    // 设置值
+    
+    m_module->setBitVariable(m_currentChannelIndex, row, variable);
 }
 
 void DIModuleConfigDialog::onChannelCountChanged(int index)
@@ -169,26 +249,6 @@ void DIModuleConfigDialog::onChannelSelectionChanged(int index)
 {
     m_currentChannelIndex = index;
     updateBitTable(m_currentChannelIndex);
-}
-
-void DIModuleConfigDialog::onBitVariableChanged(int row, int column)
-{
-    // 只处理变量名和描述列
-    if (column != 1 && column != 2) {
-        return;
-    }
-    
-    // 获取变量名和描述
-    QString name = m_bitTable->item(row, 1) ? m_bitTable->item(row, 1)->text() : "";
-    QString description = m_bitTable->item(row, 2) ? m_bitTable->item(row, 2)->text() : "";
-    
-    // 更新模块数据
-    DIBitVariable variable;
-    variable.name = name;
-    variable.description = description;
-    variable.isGlobal = true;  // 默认设置为全局变量
-    
-    m_module->setBitVariable(m_currentChannelIndex, row, variable);
 }
 
 void DIModuleConfigDialog::saveConfiguration()

@@ -86,6 +86,7 @@ void DIModule::saveConfiguration(const QString &filePath)
             bitObj["name"] = m_channels[i].bits[j].name;
             bitObj["description"] = m_channels[i].bits[j].description;
             bitObj["isGlobal"] = m_channels[i].bits[j].isGlobal;
+            bitObj["value"] = m_channels[i].bits[j].value;  // 保存位值
             bitsArray.append(bitObj);
         }
         
@@ -145,6 +146,7 @@ void DIModule::loadConfiguration(const QString &filePath)
                     variable.name = bitObj["name"].toString();
                     variable.description = bitObj["description"].toString();
                     variable.isGlobal = bitObj["isGlobal"].toBool();
+                    variable.value = bitObj.contains("value") ? bitObj["value"].toInt() : 0;  // 读取位值，如果不存在则默认为0
                     
                     setBitVariable(channelNumber, j, variable);
                 }
