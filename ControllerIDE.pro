@@ -1,4 +1,4 @@
-QT       += core gui
+QT       += core gui network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -21,6 +21,8 @@ SOURCES += \
     dimoduleconfigdialog.cpp \
     domodule.cpp \
     domoduleconfigdialog.cpp \
+    hostmodule.cpp \
+    hostmoduleconfigdialog.cpp \
     main.cpp \
     mainwindow.cpp \
     projectmanager.cpp \
@@ -32,6 +34,8 @@ HEADERS += \
     dimoduleconfigdialog.h \
     domodule.h \
     domoduleconfigdialog.h \
+    hostmodule.h \
+    hostmoduleconfigdialog.h \
     mainwindow.h \
     projectmanager.h \
     thememanager.h

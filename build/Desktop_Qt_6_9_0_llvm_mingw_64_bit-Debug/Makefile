@@ -438,6 +438,7 @@ Makefile: ../../ControllerIDE.pro D:/Soft/Qt/6.9.0/llvm-mingw_64/mkspecs/win32-c
 		../../ControllerIDE.pro \
 		D:/Soft/Qt/6.9.0/llvm-mingw_64/lib/Qt6Widgets.prl \
 		D:/Soft/Qt/6.9.0/llvm-mingw_64/lib/Qt6Gui.prl \
+		D:/Soft/Qt/6.9.0/llvm-mingw_64/lib/Qt6Network.prl \
 		D:/Soft/Qt/6.9.0/llvm-mingw_64/lib/Qt6Core.prl \
 		D:/Soft/Qt/6.9.0/llvm-mingw_64/lib/Qt6EntryPoint.prl \
 		D:/Soft/Qt/6.9.0/llvm-mingw_64/mkspecs/features/build_pass.prf \
@@ -811,6 +812,7 @@ D:/Soft/Qt/6.9.0/llvm-mingw_64/mkspecs/features/lex.prf:
 ../../ControllerIDE.pro:
 D:/Soft/Qt/6.9.0/llvm-mingw_64/lib/Qt6Widgets.prl:
 D:/Soft/Qt/6.9.0/llvm-mingw_64/lib/Qt6Gui.prl:
+D:/Soft/Qt/6.9.0/llvm-mingw_64/lib/Qt6Network.prl:
 D:/Soft/Qt/6.9.0/llvm-mingw_64/lib/Qt6Core.prl:
 D:/Soft/Qt/6.9.0/llvm-mingw_64/lib/Qt6EntryPoint.prl:
 D:/Soft/Qt/6.9.0/llvm-mingw_64/mkspecs/features/build_pass.prf:

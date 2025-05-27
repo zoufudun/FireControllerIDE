@@ -3,6 +3,8 @@ release/dimodule.o
 release/dimoduleconfigdialog.o
 release/domodule.o
 release/domoduleconfigdialog.o
+release/hostmodule.o
+release/hostmoduleconfigdialog.o
 release/main.o
 release/mainwindow.o
 release/projectmanager.o
@@ -13,6 +15,8 @@ release/moc_dimodule.o
 release/moc_dimoduleconfigdialog.o
 release/moc_domodule.o
 release/moc_domoduleconfigdialog.o
+release/moc_hostmodule.o
+release/moc_hostmoduleconfigdialog.o
 release/moc_mainwindow.o
 release/moc_projectmanager.o
 release/moc_thememanager.o

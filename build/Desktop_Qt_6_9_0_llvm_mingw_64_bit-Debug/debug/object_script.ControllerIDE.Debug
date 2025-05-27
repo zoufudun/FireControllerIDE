@@ -3,6 +3,8 @@ debug/dimodule.o
 debug/dimoduleconfigdialog.o
 debug/domodule.o
 debug/domoduleconfigdialog.o
+debug/hostmodule.o
+debug/hostmoduleconfigdialog.o
 debug/main.o
 debug/mainwindow.o
 debug/projectmanager.o
@@ -13,6 +15,8 @@ debug/moc_dimodule.o
 debug/moc_dimoduleconfigdialog.o
 debug/moc_domodule.o
 debug/moc_domoduleconfigdialog.o
+debug/moc_hostmodule.o
+debug/moc_hostmoduleconfigdialog.o
 debug/moc_mainwindow.o
 debug/moc_projectmanager.o
 debug/moc_thememanager.o

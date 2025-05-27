@@ -15,6 +15,7 @@
 
 #include "dimoduleconfigdialog.h"  // 添加DI模块配置对话框头文件
 #include "domoduleconfigdialog.h"  // 添加DO模块配置对话框头文件
+#include "hostmoduleconfigdialog.h"  // 添加主机模块配置对话框头文件
 
 ComponentManager::ComponentManager(QObject *parent)
     : QObject(parent)
@@ -27,6 +28,9 @@ ComponentManager::ComponentManager(QObject *parent)
     
     // 初始化DO模块
     m_doModule = new DOModule(this);
+    
+    // 初始化主机模块
+    m_hostModule = new HostModule(this);
 }
 
 ComponentManager::~ComponentManager()
@@ -175,6 +179,8 @@ void ComponentManager::showConfigureComponentDialog(QStandardItem *item)
         showDIModuleConfigDialog(item);
     } else if (componentType == "DOModule") {
         showDOModuleConfigDialog(item);
+    } else if (componentType == "HostModule") {
+        showHostModuleConfigDialog(item);
     } else {
         // 其他类型的组件配置
         QMessageBox::information(nullptr, "配置组件", "组件配置功能将在后续版本中实现");
@@ -204,6 +210,21 @@ void ComponentManager::showDOModuleConfigDialog(QStandardItem *item)
     
     // 创建DO模块配置对话框
     DOModuleConfigDialog dialog(m_doModule);
+    
+    if (dialog.exec() == QDialog::Accepted) {
+        // 配置已保存，可以在这里更新项目树中的组件信息
+        // 例如，更新组件名称或图标等
+    }
+}
+
+void ComponentManager::showHostModuleConfigDialog(QStandardItem *item)
+{
+    if (!item) {
+        return;
+    }
+    
+    // 创建主机模块配置对话框
+    HostModuleConfigDialog dialog(m_hostModule);
     
     if (dialog.exec() == QDialog::Accepted) {
         // 配置已保存，可以在这里更新项目树中的组件信息
