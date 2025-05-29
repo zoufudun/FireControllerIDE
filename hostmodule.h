@@ -60,8 +60,15 @@ public:
     // 测试网络连接
     bool testConnection() const;
     
+    // Add these new methods
+    void setComponentId(const QString &id);
+    QString getComponentId() const;
+    void saveConfiguration();
+    void loadConfiguration();
+    
 private:
     HostConfiguration m_configuration;
+    QString m_componentId;  // Add this member variable
 };
 
 #endif // HOSTMODULE_H

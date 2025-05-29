@@ -65,8 +65,15 @@ private:
     // 添加DO模块实例
     DOModule *m_doModule;
     
-    // 添加主机模块实例
-    HostModule *m_hostModule;
+    // 移除单一的主机模块实例
+    // HostModule *m_hostModule;
+    
+    // 添加主机模块映射，每个组件项对应一个独立的主机模块实例
+    QMap<QStandardItem*, HostModule*> m_hostModules;
+    
+    // 添加辅助方法
+    HostModule* getOrCreateHostModule(QStandardItem *item);
+    void removeHostModule(QStandardItem *item);
 };
 
 #endif // COMPONENTMANAGER_H

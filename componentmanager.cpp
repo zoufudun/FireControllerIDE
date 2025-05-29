@@ -29,8 +29,56 @@ ComponentManager::ComponentManager(QObject *parent)
     // 初始化DO模块
     m_doModule = new DOModule(this);
     
-    // 初始化主机模块
-    m_hostModule = new HostModule(this);
+    // 不再初始化单一的主机模块实例
+    // m_hostModule = new HostModule(this);
+}
+
+// 添加获取或创建主机模块的方法
+HostModule* ComponentManager::getOrCreateHostModule(QStandardItem *item)
+{
+    if (!m_hostModules.contains(item)) {
+        // 为每个主机模块组件创建独立的实例
+        HostModule *hostModule = new HostModule(this);
+        m_hostModules[item] = hostModule;
+        
+        // 可以根据组件名称设置默认配置
+        HostConfiguration config = hostModule->getConfiguration();
+        config.hostName = item->text(); // 使用组件名称作为主机名
+        hostModule->setConfiguration(config);
+    }
+    return m_hostModules[item];
+}
+
+void ComponentManager::removeHostModule(QStandardItem *item)
+{
+    if (m_hostModules.contains(item)) {
+        delete m_hostModules[item];
+        m_hostModules.remove(item);
+    }
+}
+
+void ComponentManager::showHostModuleConfigDialog(QStandardItem *item)
+{
+    if (!item) {
+        return;
+    }
+    
+    // 获取或创建该组件对应的主机模块实例
+    HostModule *hostModule = getOrCreateHostModule(item);
+    
+    // 创建主机模块配置对话框
+    HostModuleConfigDialog dialog(hostModule);
+    
+    if (dialog.exec() == QDialog::Accepted) {
+        // 配置已保存，可以在这里更新项目树中的组件信息
+        // 例如，更新组件名称或图标等
+        
+        // 可以根据配置更新组件显示名称
+        HostConfiguration config = hostModule->getConfiguration();
+        if (!config.hostName.isEmpty()) {
+            item->setText(config.hostName);
+        }
+    }
 }
 
 ComponentManager::~ComponentManager()
@@ -108,7 +156,7 @@ void ComponentManager::showAddComponentDialog()
     layout->addLayout(nameLayout);
     
     // 当选择组件时，自动填充默认名称
-    connect(componentList, &QListWidget::currentItemChanged, [nameEdit, componentList](QListWidgetItem *current, QListWidgetItem *) {
+    connect(componentList, &QListWidget::currentItemChanged, [nameEdit](QListWidgetItem *current, QListWidgetItem *) {
         if (current) {
             nameEdit->setText(current->text());
             nameEdit->selectAll();
@@ -217,21 +265,6 @@ void ComponentManager::showDOModuleConfigDialog(QStandardItem *item)
     }
 }
 
-void ComponentManager::showHostModuleConfigDialog(QStandardItem *item)
-{
-    if (!item) {
-        return;
-    }
-    
-    // 创建主机模块配置对话框
-    HostModuleConfigDialog dialog(m_hostModule);
-    
-    if (dialog.exec() == QDialog::Accepted) {
-        // 配置已保存，可以在这里更新项目树中的组件信息
-        // 例如，更新组件名称或图标等
-    }
-}
-
 void ComponentManager::showDeleteComponentDialog(QStandardItem *item)
 {
     if (!item) {
@@ -246,6 +279,12 @@ void ComponentManager::showDeleteComponentDialog(QStandardItem *item)
     msgBox.setDefaultButton(QMessageBox::No);
     
     if (msgBox.exec() == QMessageBox::Yes) {
+        // 如果是主机模块，清理对应的实例
+        QString componentType = item->data(Qt::UserRole).toString();
+        if (componentType == "HostModule") {
+            removeHostModule(item);
+        }
+        
         emit componentDeleted(item);
     }
 }

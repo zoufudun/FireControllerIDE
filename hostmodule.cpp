@@ -2,13 +2,16 @@
 #include <QFile>
 #include <QJsonDocument>
 #include <QJsonObject>
- #include <QHostAddress>
+#include <QHostAddress>
 #include <QRegularExpression>
+
+// Remove the class declaration - it should only be in the header file
+// class HostModule : public QObject { ... }  <- DELETE THIS
 
 HostModule::HostModule(QObject *parent)
     : QObject(parent)
 {
-    // 使用默认配置初始化
+    // Constructor implementation
 }
 
 HostModule::~HostModule()
@@ -110,3 +113,25 @@ bool HostModule::testConnection() const
     // 暂时返回true作为示例
     return isValidIPAddress(m_configuration.ipAddress) && isValidPort(m_configuration.port);
 }
+
+
+void HostModule::setComponentId(const QString &id) 
+{ 
+    m_componentId = id; 
+}
+
+QString HostModule::getComponentId() const 
+{ 
+    return m_componentId; 
+}
+
+void HostModule::saveConfiguration()
+{
+    // Implementation here
+}
+
+void HostModule::loadConfiguration()
+{
+    // Implementation here
+}
+    
